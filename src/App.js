@@ -1,23 +1,34 @@
-import logo from './logo.svg';
-import './App.css';
+import "./App.css";
+import { useState } from "react";
 
 function App() {
+  const [Image, setImage] = useState("");
+  const [Joke, setJoke] = useState("");
+  const [Punchline, setPunchline] = useState("");
+
+  function generateImage() {
+    fetch("https://dog.ceo/api/breeds/image/random")
+      .then((response) => response.json())
+      .then((data) => {
+        setImage(data.message);
+      });
+    fetch("https://official-joke-api.appspot.com/random_joke")
+      .then((response) => response.json())
+      .then((data) => {
+        setJoke(data.setup);
+        setPunchline(data.punchline);
+      });
+  }
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <h1>Dog Meme Generator</h1>
+      <button onClick={generateImage}>Generate</button>
+      <div>
+        <p>{Joke}</p>
+        <img src={Image} alt="dog" />
+        <p>{Punchline}</p>
+      </div>
     </div>
   );
 }
